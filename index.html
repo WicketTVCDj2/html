@@ -1,19 +1,47 @@
-<div class="game-box"><canvas id="canvas" width="400" height="400"></canvas></div>
-<div class="game-info">
-    <h2>Snake Game</h2>
-    <p id="game-status"></p>
-    <p id="game-score"></p>
-</div>
-var gridSize = (tileSize = 20);
-var nextX = (nextY = 0);
+<!DOCTYPE html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Snake Game using HTML and Javascript - Studytonight</title>
+    <style>
+        .game-box {
+            text-align:center;   
+        }
+        .game-info {
+            text-align:center; 
+            font-family:arial;
+            line-height:24px;
+        }
+    </style>
+  </head>
+  <body>
+    <div class="game-box"><canvas id="canvas" width="400" height="400"></canvas></div>
+    <div class="game-info">
+        <h2>Snake Game</h2>
+        <p id="game-status"></p>
+        <p id="game-score"></p>
+    </div>
 
-var defaultTailSize = 3;
-var tailSize = defaultTailSize;
-var snakeTrail = [];
-var snakeX = (snakeY = 10);
+    <script>
+      var canvas, ctx, gameControl, gameActive;
+      var x = 8;
+      
+      const CANVAS_BORDER_COLOUR = 'black';
+      const CANVAS_BACKGROUND_COLOUR = "white";
+      const SNAKE_COLOUR = 'lightgreen';
+      const SNAKE_BORDER_COLOUR = 'darkgreen';
 
-var appleX = (appleY = 15);
-       function startGame(x) {
+      window.onload = function() {
+        canvas = document.getElementById("canvas");
+        ctx = canvas.getContext("2d");
+
+        document.addEventListener("keydown", keyDownEvent);
+
+        gameControl = startGame(x);
+      };
+      
+      function startGame(x) {
           gameActive = true;
           document.getElementById("game-status").innerHTML = "<small>Game Started</small>";
           document.getElementById("game-score").innerHTML = "";
@@ -32,7 +60,18 @@ var appleX = (appleY = 15);
           document.getElementById("game-status").innerHTML = "<small>Game Over</small>";
           document.getElementById("game-score").innerHTML = "<h1>Score: " + x + "</h1>";
       }
-function draw() {
+
+      var gridSize = (tileSize = 20);
+      var nextX = (nextY = 0);
+
+      var defaultTailSize = 3;
+      var tailSize = defaultTailSize;
+      var snakeTrail = [];
+      var snakeX = (snakeY = 10);
+
+      var appleX = (appleY = 15);
+
+      function draw() {
         snakeX += nextX;
         snakeY += nextY;
 
@@ -89,33 +128,5 @@ function draw() {
         snakeTrail.push({ x: snakeX, y: snakeY });
         while (snakeTrail.length > tailSize) {
           snakeTrail.shift();
-        }
-      }
-function keyDownEvent(e) {
-        switch (e.keyCode) {
-          case 37:
-            nextX = -1;
-            nextY = 0;
-            break;
-          case 38:
-            nextX = 0;
-            nextY = -1;
-            break;
-          case 39:
-            nextX = 1;
-            nextY = 0;
-            break;
-          case 40:
-            nextX = 0;
-            nextY = 1;
-            break;
-          case 32:
-            if(gameActive == true) {
-                pauseGame();
-            }
-            else {
-                gameControl = startGame(x);
-            }
-            break;
         }
       }
